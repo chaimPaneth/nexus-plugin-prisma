@@ -654,14 +654,15 @@ export class SchemaBuilder {
     }
 
     if (publisherConfig.ordering) {
-      const orderByTypeName = `${field.outputType.type}OrderByInput`
-      const orderByTypeNamePreviewFeature = `${field.outputType.type}OrderByWithRelationInput`
-      const orderByArg = field.args.find(
-        (arg) =>
-          (arg.inputType.type === orderByTypeName ||
-            arg.inputType.type === orderByTypeNamePreviewFeature) &&
-          arg.name === 'orderBy'
-      );
+      const orderByTypeName = `${field.outputType.type}OrderByInput`;
+      const orderByTypeNamePreviewFeature = `${field.outputType.type}OrderByWithRelationInput`;
+      const orderByTypeNameAggregatePreviewFeature = `${field.outputType.type}OrderByRelationAggregateInput`;
+      const orderByTypeNameSearchPreviewFeature = `${field.outputType.type}OrderByWithRelationAndSearchRelevanceInput`;
+      const orderByArg = field.args.find((arg) => (arg.inputType.type === orderByTypeName ||
+          arg.inputType.type === orderByTypeNamePreviewFeature || 
+          arg.inputType.type === orderByTypeNameAggregatePreviewFeature || 
+          arg.inputType.type === orderByTypeNameSearchPreviewFeature) &&
+          arg.name === 'orderBy');
 
       if (!orderByArg) {
         throw new Error(`Could not find ordering argument for ${typeName}.${field.name}`)
